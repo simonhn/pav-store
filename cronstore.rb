@@ -20,7 +20,7 @@ include MusicBrainz
 
 def configure
   #setup MySQL connection:  
-  @config = YAML::load( File.open( 'conf/settings.yml' ) )
+  @config = YAML::load( File.open( 'config/settings.yml' ) )
   @connection = "#{@config['adapter']}://#{@config['username']}:#{@config['password']}@#{@config['host']}/#{@config['database']}";
   DataMapper::setup(:default, @connection)
   DataMapper.auto_upgrade!
