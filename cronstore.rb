@@ -50,6 +50,9 @@ def parse
         $LOG.info("Issue while fetching or processing xml for #{file.channelname} - error: #{e.backtrace}")  
         raise StandardError, "An xml error has occurred - #{e}", e.backtrace
     end
+    if (file.id=4)
+      $LOG.info('triple j')
+    end
     #jjj's feed only contains one item, so result is not an array of item
     if (xml["abcmusic_playout"]["items"]["item"].length < 15) # !> redefine new
       if (Play.count(:playedtime =>xml["abcmusic_playout"]["items"]["item"].first.to_a[1].to_s, :channel_id=>file.id)==0)
