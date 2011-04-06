@@ -3,7 +3,7 @@ require 'rubygems'
 require 'logger'  
 
 #models
-require 'models'
+require './models'
 
 #for xml fetch and parse
 require 'rest_client'
