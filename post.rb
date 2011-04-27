@@ -17,6 +17,8 @@ def configure
   DataMapper::setup(:default, @connection)
   #DataMapper.auto_upgrade!
   #DataMapper::auto_migrate! 
+  #result = RestClient.get "http://127.0.0.1:9393/v1/artist/1", {:accept => "text/xml"}
+  #puts "#{result.code} : #{result}"
 end
 
 #Fetching xml, run through items and post to pav:api to store
@@ -30,6 +32,8 @@ def parse
     begin
        result = RestClient.get file.channelxml
        xml = Crack::XML.parse(result)
+       puts file.channelxml.inspect
+       
       rescue => e
         $LOG.info("Issue while fetching or processing xml for #{result} - error: #{e.backtrace}")  
         raise StandardError, "An xml error has occurred - #{e}", e.backtrace
