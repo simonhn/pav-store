@@ -11,6 +11,7 @@ require 'crack'
 require 'nokogiri'
 
 def configure
+  $LOG = Logger.new('log/pavstore.log', 'monthly')
   #setup MySQL connection:  
   @config = YAML::load( File.open( 'config/settings.yml' ) )
   @connection = "#{@config['adapter']}://#{@config['username']}:#{@config['password']}@#{@config['host']}/#{@config['database']}";
@@ -36,7 +37,6 @@ def parse
        
       rescue => e
         $LOG.info("Issue while fetching or processing xml for #{result} - error: #{e.backtrace}")  
-        raise StandardError, "An xml error has occurred - #{e}", e.backtrace
       end
      
       xml["abcmusic_playout"]["items"]["item"].each do |item|
