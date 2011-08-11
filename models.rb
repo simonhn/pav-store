@@ -56,6 +56,8 @@ class Play
     include DataMapper::Resource
     property :id, Serial
     property :playedtime, DateTime
+    #belongs_to :track, :child_key => [:track_id] 
+    #belongs_to :channel, :child_key => [:channel_id] 
     belongs_to :track
     belongs_to :channel
     def date
@@ -72,5 +74,6 @@ class Channel
     property :channelxml, String, :length => 512
     property :logo, String, :length => 512
     property :channellink, String, :length => 512
+    property :programxml, String, :length => 512
     has n, :plays
 end
