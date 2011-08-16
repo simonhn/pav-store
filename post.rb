@@ -49,9 +49,9 @@ def get_program(programxml, d)
 end
 
 #Fetching xml, run through items and post to pav:api to store
-def parse
-  channels = Channel.all
-  channels.each do |file|
+def parse(id)
+  file = Channel.get(id)
+  #channels.each do |file|
   
     #puts file.channelname
     
@@ -63,6 +63,7 @@ def parse
        
       rescue StandardError => e
         $LOG.info("Issue while fetching or processing xml for #{result} - error: #{e.backtrace}")  
+        
       end
      
       xml["abcmusic_playout"]["items"]["item"].each do |item|
@@ -75,15 +76,16 @@ def parse
           program_id = get_program(file.programxml, time)
           item['program_id'] = program_id
           result = RestClient.post "http://#{@config['authuser']}:#{@config['authpass']}@96.126.96.51/v1/track", {:payload => {:channel => file.id,:item => item}}, :content_type => 'application/json'
+          
            #result = RestClient.post "http://admin:#{@config['authpass']}@api.simonium.com/v1/track", {:payload => {:channel => file.id,:item => item}}, :content_type => 'application/json'
            #result = RestClient.post "http://admin:#{@config['authpass']}@127.0.0.1:4567/v1/track", {:payload => {:channel => file.id,:item => item}}, :content_type => 'application/json'
            
            #puts "#{result.code} : #{result}"
         end  
      end
-    end
+    #end
 end
 
 
 configure
-parse
+parse(ARGV[0])
