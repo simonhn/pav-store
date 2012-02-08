@@ -46,6 +46,7 @@ def get_program(programxml, d)
       end
     end
   end
+  return nil
 end
 
 #Fetching xml, run through items and post to pav:api to store
@@ -71,8 +72,8 @@ def parse(id)
           #puts item['artist']['artistname']
           
           d = Time.parse(item['playedtime'])
-          #triple j timestamp has utm zone indentifier, so changing to aest +10
-          time = Time.new(d.year,d.month,d.day,d.hour,d.min,d.sec,"+10:00")
+          #triple j timestamp has utm zone indentifier, so changing to aest: +10 (+11 summertime)
+          time = Time.new(d.year,d.month,d.day,d.hour,d.min,d.sec,"+11:00")
           program_id = get_program(file.programxml, time)
           item['program_id'] = program_id
           result = RestClient.post "http://#{@config['authuser']}:#{@config['authpass']}@96.126.96.51/v1/track", {:payload => {:channel => file.id,:item => item}}, :content_type => 'application/json'
